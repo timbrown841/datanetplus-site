@@ -64,15 +64,15 @@
     form#leadForm input,form#leadForm textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--ink)}
     form#leadForm textarea{min-height:140px;resize:vertical}
 
-    /* Strong row grid */
+    /* Force two columns on desktop */
     #contact .card form#leadForm .row{display:grid !important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
     #contact .card form#leadForm .row > div{min-width:0}
     @media (max-width:720px){#contact .card form#leadForm .row{grid-template-columns:1fr !important}}
 
     .help{font-size:.9rem;color:var(--muted)}
 
-    /* ✅ Text-flow safety reset to kill vertical writing overrides */
-    #leadForm, #leadForm *{
+    /* 🔒 Belt-and-braces: force horizontal flow for the entire contact card */
+    #contact .card, #contact .card *{
       writing-mode: horizontal-tb !important;
       text-orientation: mixed !important;
       white-space: normal !important;
