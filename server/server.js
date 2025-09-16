@@ -1,4 +1,4 @@
-// /server/server.js
+// /server/server.js  (drop-in replacement)
 import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
@@ -9,27 +9,55 @@ import rateLimit from 'express-rate-limit';
 
 const app = express();
 
-const allowed = (process.env.ALLOWED_ORIGINS || '')
+// ---- CORS (with logging & wildcard support) ----
+const rawOrigins = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
 
+// why: support simple wildcard like *.github.io
+function originAllowed(origin) {
+  if (!origin) return true; // curl, Postman, server-to-server
+  for (const rule of rawOrigins) {
+    if (rule === origin) return true;
+    if (rule.startsWith('*.')) {
+      const domain = rule.slice(2); // after "*."
+      if (origin.endsWith(domain) && origin.split('.').length >= domain.split('.').length + 1) return true;
+    }
+  }
+  return false;
+}
+
+app.use((req, _res, next) => {
+  const o = req.headers.origin || '';
+  const ok = originAllowed(o);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`[CORS] origin="${o}" allowed=${ok} rules=${JSON.stringify(rawOrigins)}`);
+  }
+  next();
+});
+
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    if (allowed.length === 0 || allowed.includes(origin)) return cb(null, true);
+    if (originAllowed(origin)) return cb(null, true);
     return cb(new Error('Not allowed by CORS'));
-  }
+  },
+  credentials: false
 }));
 
+app.options('*', cors()); // preflight
+
+// ---- Security / middleware ----
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(express.json({ limit: '256kb' }));
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 app.set('trust proxy', 1);
 
+// Basic abuse protection
 const limiter = rateLimit({ windowMs: 60_000, max: 20 });
 app.use('/api/', limiter);
 
+// ---- Mongo model ----
 const LeadSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true, maxlength: 100 },
   email: { type: String, required: true, lowercase: true, trim: true, maxlength: 200 },
@@ -42,6 +70,7 @@ const LeadSchema = new mongoose.Schema({
 
 const Lead = mongoose.model('Lead', LeadSchema);
 
+// ---- Routes ----
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
 app.post('/api/lead', async (req, res) => {
@@ -61,6 +90,7 @@ app.post('/api/lead', async (req, res) => {
   }
 });
 
+// ---- Startup ----
 const PORT = process.env.PORT || 3000;
 
 async function start() {
