@@ -1,171 +1,156 @@
+<!-- /contact-form.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DataNet Plus — Complete Suite of IT Solutions</title>
-  <meta name="description" content="Cloud infrastructure, DevOps, Azure/Office 365, Networking, Cyber Security, Backup & Recovery, and Remote Support." />
+  <title>Contact — DataNet Plus</title>
+  <meta name="description" content="Contact DataNet Plus — send us your enquiry." />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="preload" as="style" onload="this.rel='stylesheet'">
   <style>
-    :root{
-      --bg:#0b1020;--bg-alt:#0e1428;--card:#111935;--ink:#e9eefb;--muted:#b8c1e7;
-      --brand:#5aa0ff;--brand-2:#62e0c1;--shadow:0 10px 30px rgba(0,0,0,.25);
-      --max:1120px;--radius:14px;--gap:20px;
-    }
+    :root{--bg:#0b1020;--bg-alt:#0e1428;--ink:#e9eefb;--muted:#b8c1e7;--brand:#5aa0ff;--brand2:#62e0c1;--max:900px;--radius:14px;--err:#ff7b7b}
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),var(--bg-alt));color:var(--ink)}
     a{color:var(--brand);text-decoration:none}
     .wrap{max-width:var(--max);margin:auto;padding:0 20px}
-
-    header{position:sticky;top:0;z-index:1000;background:rgba(11,16,32,.7);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(255,255,255,0.06)}
-    .nav{display:flex;align-items:center;justify-content:space-between;min-height:64px}
-    .brand{display:flex;align-items:center;gap:12px;font-weight:700;color:var(--ink)}
-    .brand .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+    header{position:sticky;top:0;z-index:1000;background:rgba(11,16,32,.7);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;min-height:68px}
+    .brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-weight:700}
+    .brand img{height:34px;width:auto;display:block;border-radius:6px}
     nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
     nav a{color:var(--ink);opacity:.9;font-weight:600}
-    nav a.active, nav a:focus{color:var(--brand-2)}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--ink);cursor:pointer}
-    .btn.cta{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#061226;border:none}
-
-    section{padding:80px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
-    section:last-of-type{border-bottom:none}
-    .overline{color:var(--brand-2);text-transform:uppercase;letter-spacing:.2em;font-weight:700;font-size:.8rem}
-    h1,h2{margin:0 0 14px}
-    h1{font-size:clamp(2rem,5vw,3rem);line-height:1.1}
-    h2{font-size:clamp(1.4rem,3.4vw,2rem)}
-    p{color:var(--muted);line-height:1.7;margin:10px 0 0}
-    .grid{display:grid;gap:var(--gap)}
-    .grid.cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .grid.cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-    @media (max-width:900px){.grid.cols-3{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.grid.cols-3,.grid.cols-2{grid-template-columns:1fr}}
-
-    .hero{padding:110px 0;background:
-      radial-gradient(1000px 400px at 10% -10%, rgba(98,224,193,.25), transparent 60%),
-      radial-gradient(800px 500px at 90% -20%, rgba(90,160,255,.25), transparent 60%)}
-    .hero .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
-
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
-
-    .logos{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;align-items:center}
-    .logo{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;aspect-ratio:3/1;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted)}
-    @media (max-width:900px){.logos{grid-template-columns:repeat(3,1fr)}}
-
-    footer{padding:28px 0;color:var(--muted)}
+    nav a:hover, nav a:focus{color:var(--brand2)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--ink)}
+    .btn.cta{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#061226;border:none}
+    main{padding:60px 0}
+    h1{margin:0 0 10px;font-size:clamp(1.6rem,4vw,2.2rem)}
+    p{color:var(--muted)}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px}
+    form{display:grid;gap:14px;margin-top:14px}
+    label{display:block;font-weight:600;margin-bottom:6px}
+    input,textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--ink);font-size:1rem}
+    textarea{min-height:140px;resize:vertical}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:640px){.row{grid-template-columns:1fr}}
+    .consent{display:flex;gap:10px;align-items:flex-start}
+    .consent input[type="checkbox"]{flex:0 0 auto;margin-top:4px}
+    .consent span{flex:1 1 auto;min-width:0;line-height:1.5;color:var(--muted)}
+    .error{display:none;color:var(--err);font-size:.9rem;margin-top:6px}
+    .error.show{display:block}
+    .toast{position:fixed;right:16px;bottom:16px;background:#101c34;color:var(--ink);border:1px solid rgba(255,255,255,.12);padding:12px 14px;border-radius:10px;display:none}
   </style>
 </head>
 <body>
   <header>
     <div class="wrap nav">
-      <a href="#home" class="brand" aria-label="DataNet Plus">
-        <span class="dot"></span><span>DataNet&nbsp;Plus</span>
+      <a class="brand" href="index.html" aria-label="Back to Home">
+        <img src="assets/logo.png" alt="DataNet Plus logo">
+        <span>DataNet&nbsp;Plus</span>
       </a>
       <nav aria-label="primary">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#clients">Clients</a></li>
-          <li><a href="#contact" class="btn small cta">Contact</a></li>
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#clients">Clients</a></li>
+          <li><a href="index.html#contact" class="btn cta">Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main id="home" class="hero">
+  <main>
     <div class="wrap">
-      <div class="overline">Providing a Complete Suite of IT Solutions</div>
-      <h1>Cloud, DevOps, Networking, Security — all in one partner.</h1>
-      <p class="help">IaaS • SaaS • Azure / Office 365 • AWS • VOIP • Exchange • Linux/Windows • Cyber Security • Backup & Recovery • Remote Support • Intune/MDM</p>
-      <div class="cta-row">
-        <a href="#contact" class="btn cta">Get a Quote</a>
-        <a href="#contact" class="btn">Book Support</a>
-        <a href="mailto:info@datanetplus.co.uk" class="btn">info@datanetplus.co.uk</a>
+      <h1>Contact Form</h1>
+      <p>Tell us what you need — we’ll get back fast.</p>
+
+      <div class="card">
+        <form id="leadForm" novalidate>
+          <div class="row">
+            <div>
+              <label for="name">Name *</label>
+              <input id="name" name="name" autocomplete="name" required aria-describedby="err-name">
+              <div id="err-name" class="error">Please enter your name.</div>
+            </div>
+            <div>
+              <label for="email">Email *</label>
+              <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="err-email">
+              <div id="err-email" class="error">Enter a valid email (e.g. name@domain.com).</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel">
+            </div>
+            <div>
+              <label for="company">Company</label>
+              <input id="company" name="company" autocomplete="organization">
+            </div>
+          </div>
+
+          <div>
+            <label for="message">How can we help? *</label>
+            <textarea id="message" name="message" required aria-describedby="err-message"></textarea>
+            <div id="err-message" class="error">Please tell us a bit about your request.</div>
+          </div>
+
+          <!-- Honeypot -->
+          <input type="text" id="website" name="website" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <label class="consent" aria-describedby="err-consent">
+            <input type="checkbox" id="consent" required>
+            <span>I consent to have this website store my submitted information so DataNet Plus can respond to my enquiry.</span>
+          </label>
+          <div id="err-consent" class="error">Please confirm consent to proceed.</div>
+
+          <div style="display:flex;gap:10px;align-items:center">
+            <button type="submit" class="btn cta">Send</button>
+            <a class="btn" href="index.html">Cancel</a>
+          </div>
+        </form>
       </div>
+
+      <p style="color:var(--muted);margin-top:12px">Prefer email? <a href="mailto:info@datanetplus.co.uk">info@datanetplus.co.uk</a></p>
     </div>
   </main>
 
-  <section id="about">
-    <div class="wrap grid cols-2">
-      <div>
-        <div class="overline">About</div>
-        <h2>Practical engineering for real-world IT.</h2>
-        <p>We design, implement, and support modern infrastructure for home, SMB, and mid-market teams. From migrations to recovery and day-2 operations, we keep your stack secure and reliable.</p>
-        <p class="help">Company Reg No. 10935495 — DataNet Plus Ltd.</p>
-      </div>
-      <div class="card">
-        <strong>Why choose us</strong>
-        <ul>
-          <li>Architecture & implementation (on-prem / cloud)</li>
-          <li>Certified Microsoft 365/Azure & AWS specialists</li>
-          <li>24×7 remote support with SLAs</li>
-          <li>Security-first: hardening, EDR, backups, DR</li>
-          <li>Clear pricing and communication</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section id="services">
-    <div class="wrap">
-      <div class="overline">Services</div>
-      <h2>One stop tech support.</h2>
-      <div class="grid cols-3" style="margin-top:18px">
-        <article class="card"><strong>Infrastructure (IaaS)</strong><p>Design, implementation & support.</p></article>
-        <article class="card"><strong>DevOps</strong><p>CI/CD, IaC, observability, SRE.</p></article>
-        <article class="card"><strong>Azure / O365 / AWS</strong><p>Provisioning, migration, governance.</p></article>
-        <article class="card"><strong>Telephony (VOIP/Lines)</strong><p>Cloud PBX, SIP trunks, Teams Voice.</p></article>
-        <article class="card"><strong>Microsoft Exchange</strong><p>Hybrid, hardening, troubleshooting.</p></article>
-        <article class="card"><strong>Linux & Windows</strong><p>Servers, endpoints, automation.</p></article>
-        <article class="card"><strong>Programming</strong><p>Integrations, portals, automations.</p></article>
-        <article class="card"><strong>Networking</strong><p>Cisco, Check Point, F5, Fortigate.</p></article>
-        <article class="card"><strong>Cyber Security</strong><p>Zero-trust, MFA, EDR, SIEM.</p></article>
-        <article class="card"><strong>Backup</strong><p>Azure, Dell EMC, Veeam, Backup Exec.</p></article>
-        <article class="card"><strong>Data Recovery</strong><p>Rapid RTOs with tested runbooks.</p></article>
-        <article class="card"><strong>Remote Support & MDM</strong><p>Intune, device lifecycle, BYOD.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <section id="clients">
-    <div class="wrap">
-      <div class="overline">Clients</div>
-      <h2>Trusted by teams small & large.</h2>
-      <div class="logos">
-        <div class="logo">Acme PLC</div>
-        <div class="logo">Globex</div>
-        <div class="logo">Initech</div>
-        <div class="logo">Umbrella</div>
-        <div class="logo">Stark</div>
-        <div class="logo">Wayne</div>
-      </div>
-      <p class="help" style="margin-top:10px">Replace placeholders with your client logos.</p>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="wrap">
-      <div class="overline">Contact</div>
-      <h2>Get in touch</h2>
-      <p class="help">We only use your details to respond to your enquiry.</p>
-      <div class="card"><strong>Email:</strong> info@datanetplus.co.uk</div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="wrap">
-      <div style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap">
-        <span>© <span id="y"></span> DataNet Plus</span>
-        <span>E: info@datanetplus.co.uk</span>
-        <span><a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a></span>
-      </div>
-    </div>
-  </footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
-    document.getElementById('y').textContent=new Date().getFullYear();
+    const emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    const form=document.getElementById('leadForm');
+    const toast=document.getElementById('toast');
+    function showToast(msg, ok=true){toast.textContent=msg;toast.style.borderColor=ok?'rgba(45,212,191,.45)':'rgba(255,107,107,.45)';toast.style.display='block';setTimeout(()=>toast.style.display='none',4000);}
+    function setErr(id,show){document.getElementById(id)?.classList.toggle('show',!!show);}
+    function vName(){const ok=!!form.name.value.trim();setErr('err-name',!ok);return ok;}
+    function vEmail(){const ok=emailRe.test(form.email.value.trim());setErr('err-email',!ok);return ok;}
+    function vMsg(){const ok=form.message.value.trim().length>3;setErr('err-message',!ok);return ok;}
+    function vConsent(){const ok=document.getElementById('consent').checked;setErr('err-consent',!ok);return ok;}
+
+    form.name.addEventListener('input',vName);
+    form.email.addEventListener('input',vEmail);
+    form.message.addEventListener('input',vMsg);
+    document.getElementById('consent').addEventListener('change',vConsent);
+
+    const API_BASE='https://datanetplus-api.onrender.com';
+    form.addEventListener('submit',async e=>{
+      e.preventDefault();
+      if(document.getElementById('website').value){showToast('Bot blocked.',false);return;}
+      const ok=[vName(),vEmail(),vMsg(),vConsent()].every(Boolean);
+      if(!ok){showToast('Please fix the highlighted fields.',false);return;}
+      const payload={name:form.name.value.trim(),email:form.email.value.trim(),phone:form.phone.value.trim(),company:form.company.value.trim(),message:form.message.value.trim(),consent:document.getElementById('consent').checked,source:'web'};
+      try{
+        const res=await fetch(`${API_BASE}/api/lead`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        const json=await res.json().catch(()=>({}));
+        if(!res.ok) throw new Error(json.error||`HTTP ${res.status}`);
+        form.innerHTML=`<div class="card" style="background:linear-gradient(180deg,rgba(45,212,191,.12),rgba(45,212,191,.06));border:1px solid rgba(45,212,191,.4)"><h2>Thanks — we’ve got your enquiry.</h2><p style="color:#b8c1e7">We’ll reply soon. If it’s urgent, email <a href="mailto:info@datanetplus.co.uk">info@datanetplus.co.uk</a>.</p><div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="index.html">Back to Home</a><a class="btn cta" href="mailto:info@datanetplus.co.uk">Email Us</a></div></div>`;
+        showToast('Submitted successfully. Thank you!',true);
+      }catch(err){console.error(err);showToast('Could not send. Please email info@datanetplus.co.uk',false);}
+    });
   </script>
 </body>
 </html>
