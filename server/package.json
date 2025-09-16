@@ -1,4 +1,4 @@
-// /server/package.json  (no comments inside the JSON!)
+/server/package.json  (no comments inside the JSON!)
 {
   "name": "datanetplus-api",
   "version": "1.0.0",
