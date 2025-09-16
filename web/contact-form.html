@@ -1,3 +1,4 @@
+<!-- /contact-form.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,95 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact — DataNet Plus</title>
   <meta name="description" content="Contact DataNet Plus — send us your enquiry." />
-
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="16x16" href="assets/logo.png?v=2">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png?v=2">
   <link rel="apple-touch-icon" href="assets/logo.png?v=2">
-
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
         rel="preload" as="style" onload="this.rel='stylesheet'">
-
   <style>
-    :root{
-      --bg:#0b1020;--bg-alt:#0e1428;--ink:#e9eefb;--muted:#b8c1e7;
-      --brand:#5aa0ff;--brand2:#62e0c1;--max:900px;--radius:14px;--err:#ff7b7b
-    }
+    :root{--bg:#0b1020;--bg-alt:#0e1428;--ink:#e9eefb;--muted:#b8c1e7;--brand:#5aa0ff;--brand2:#62e0c1;--max:900px;--radius:14px;--err:#ff7b7b}
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:linear-gradient(180deg,var(--bg),var(--bg-alt));
-      color:var(--ink)
-    }
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),var(--bg-alt));color:var(--ink)}
     a{color:var(--brand);text-decoration:none}
     .wrap{max-width:var(--max);margin:auto;padding:0 20px}
-
-    header{
-      position:sticky;top:0;z-index:1000;
-      background:rgba(11,16,32,.7);
-      backdrop-filter:saturate(140%) blur(8px);
-      border-bottom:1px solid rgba(255,255,255,.06)
-    }
+    header{position:sticky;top:0;z-index:1000;background:rgba(11,16,32,.7);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
     .nav{display:flex;align-items:center;justify-content:space-between;min-height:68px}
     .brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-weight:700}
     .brand img{height:34px;width:auto;display:block;border-radius:6px}
-
     nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
     nav a{color:var(--ink);opacity:.9;font-weight:600}
     nav a:hover, nav a:focus{color:var(--brand2)}
-
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:12px 16px;border-radius:10px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-      color:var(--ink)
-    }
-    .btn.cta{
-      background:linear-gradient(135deg,var(--brand),var(--brand2));
-      color:#061226;border:none
-    }
-
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--ink)}
+    .btn.cta{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#061226;border:none}
     main{padding:60px 0}
     h1{margin:0 0 10px;font-size:clamp(1.6rem,4vw,2.2rem)}
     p{color:var(--muted)}
-
-    .card{
-      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:var(--radius);padding:20px
-    }
-
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px}
     form{display:grid;gap:14px;margin-top:14px}
     label{display:block;font-weight:600;margin-bottom:6px}
-    input,textarea{
-      width:100%;padding:12px 14px;border-radius:10px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.05);
-      color:var(--ink);font-size:1rem
-    }
+    input,textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--ink);font-size:1rem}
     textarea{min-height:140px;resize:vertical}
-
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media (max-width:640px){.row{grid-template-columns:1fr}}
-
     .consent{display:flex;gap:10px;align-items:flex-start}
     .consent input[type="checkbox"]{flex:0 0 auto;margin-top:4px}
     .consent span{flex:1 1 auto;min-width:0;line-height:1.5;color:var(--muted)}
-
     .error{display:none;color:var(--err);font-size:.9rem;margin-top:6px}
     .error.show{display:block}
-
-    .toast{
-      position:fixed;right:16px;bottom:16px;
-      background:#101c34;color:var(--ink);
-      border:1px solid rgba(255,255,255,.12);
-      padding:12px 14px;border-radius:10px;
-      display:none
-    }
+    .toast{position:fixed;right:16px;bottom:16px;background:#101c34;color:var(--ink);border:1px solid rgba(255,255,255,.12);padding:12px 14px;border-radius:10px;display:none}
+    footer{padding:28px 0;color:var(--muted)}
   </style>
 </head>
 <body>
@@ -176,9 +128,20 @@
     </div>
   </main>
 
+  <footer>
+    <div class="wrap" style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap">
+      <span>© <span id="y"></span> DataNet Plus</span>
+      <span>E: info@datanetplus.co.uk</span>
+      <span><a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a></span>
+    </div>
+  </footer>
+
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
+    document.getElementById('y').textContent=new Date().getFullYear();
+
+    // === Client-side validation ===
     const emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
     const form=document.getElementById('leadForm');
     const toast=document.getElementById('toast');
@@ -200,6 +163,7 @@
     form.message.addEventListener('input',vMsg);
     document.getElementById('consent').addEventListener('change',vConsent);
 
+    // === API target: Render (must allow your origin in CORS) ===
     const API_BASE='https://datanetplus-api.onrender.com';
 
     form.addEventListener('submit',async e=>{
@@ -222,11 +186,14 @@
         const res=await fetch(`${API_BASE}/api/lead`,{
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(payload)
+          body:JSON.stringify(payload),
+          mode:'cors', // explicit
+          keepalive:false
         });
         const json=await res.json().catch(()=>({}));
         if(!res.ok) throw new Error(json.error||`HTTP ${res.status}`);
 
+        // Success UI
         form.innerHTML=`
           <div class="card" style="background:linear-gradient(180deg,rgba(45,212,191,.12),rgba(45,212,191,.06));border:1px solid rgba(45,212,191,.4)">
             <h2>Thanks — we’ve got your enquiry.</h2>
