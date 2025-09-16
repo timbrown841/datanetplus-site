@@ -1,4 +1,3 @@
-<!-- /contact-form.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,40 +5,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact — DataNet Plus</title>
   <meta name="description" content="Contact DataNet Plus — send us your enquiry." />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/logo.png?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png?v=2">
+  <link rel="apple-touch-icon" href="assets/logo.png?v=2">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="preload" as="style" onload="this.rel='stylesheet'">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+        rel="preload" as="style" onload="this.rel='stylesheet'">
+
   <style>
-    :root{--bg:#0b1020;--bg-alt:#0e1428;--ink:#e9eefb;--muted:#b8c1e7;--brand:#5aa0ff;--brand2:#62e0c1;--max:900px;--radius:14px;--err:#ff7b7b}
+    :root{
+      --bg:#0b1020;--bg-alt:#0e1428;--ink:#e9eefb;--muted:#b8c1e7;
+      --brand:#5aa0ff;--brand2:#62e0c1;--max:900px;--radius:14px;--err:#ff7b7b
+    }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),var(--bg-alt));color:var(--ink)}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,var(--bg),var(--bg-alt));
+      color:var(--ink)
+    }
     a{color:var(--brand);text-decoration:none}
     .wrap{max-width:var(--max);margin:auto;padding:0 20px}
-    header{position:sticky;top:0;z-index:1000;background:rgba(11,16,32,.7);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+
+    header{
+      position:sticky;top:0;z-index:1000;
+      background:rgba(11,16,32,.7);
+      backdrop-filter:saturate(140%) blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.06)
+    }
     .nav{display:flex;align-items:center;justify-content:space-between;min-height:68px}
     .brand{display:flex;align-items:center;gap:12px;color:var(--ink);font-weight:700}
     .brand img{height:34px;width:auto;display:block;border-radius:6px}
+
     nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
     nav a{color:var(--ink);opacity:.9;font-weight:600}
     nav a:hover, nav a:focus{color:var(--brand2)}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--ink)}
-    .btn.cta{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#061226;border:none}
+
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:12px 16px;border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:var(--ink)
+    }
+    .btn.cta{
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#061226;border:none
+    }
+
     main{padding:60px 0}
     h1{margin:0 0 10px;font-size:clamp(1.6rem,4vw,2.2rem)}
     p{color:var(--muted)}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px}
+
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--radius);padding:20px
+    }
+
     form{display:grid;gap:14px;margin-top:14px}
     label{display:block;font-weight:600;margin-bottom:6px}
-    input,textarea{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--ink);font-size:1rem}
+    input,textarea{
+      width:100%;padding:12px 14px;border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);
+      color:var(--ink);font-size:1rem
+    }
     textarea{min-height:140px;resize:vertical}
+
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media (max-width:640px){.row{grid-template-columns:1fr}}
+
     .consent{display:flex;gap:10px;align-items:flex-start}
     .consent input[type="checkbox"]{flex:0 0 auto;margin-top:4px}
     .consent span{flex:1 1 auto;min-width:0;line-height:1.5;color:var(--muted)}
+
     .error{display:none;color:var(--err);font-size:.9rem;margin-top:6px}
     .error.show{display:block}
-    .toast{position:fixed;right:16px;bottom:16px;background:#101c34;color:var(--ink);border:1px solid rgba(255,255,255,.12);padding:12px 14px;border-radius:10px;display:none}
+
+    .toast{
+      position:fixed;right:16px;bottom:16px;
+      background:#101c34;color:var(--ink);
+      border:1px solid rgba(255,255,255,.12);
+      padding:12px 14px;border-radius:10px;
+      display:none
+    }
   </style>
 </head>
 <body>
@@ -99,7 +153,9 @@
           </div>
 
           <!-- Honeypot -->
-          <input type="text" id="website" name="website" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <input type="text" id="website" name="website"
+                 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"
+                 tabindex="-1" autocomplete="off" aria-hidden="true">
 
           <label class="consent" aria-describedby="err-consent">
             <input type="checkbox" id="consent" required>
@@ -114,7 +170,9 @@
         </form>
       </div>
 
-      <p style="color:var(--muted);margin-top:12px">Prefer email? <a href="mailto:info@datanetplus.co.uk">info@datanetplus.co.uk</a></p>
+      <p style="color:var(--muted);margin-top:12px">
+        Prefer email? <a href="mailto:info@datanetplus.co.uk">info@datanetplus.co.uk</a>
+      </p>
     </div>
   </main>
 
@@ -124,7 +182,13 @@
     const emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
     const form=document.getElementById('leadForm');
     const toast=document.getElementById('toast');
-    function showToast(msg, ok=true){toast.textContent=msg;toast.style.borderColor=ok?'rgba(45,212,191,.45)':'rgba(255,107,107,.45)';toast.style.display='block';setTimeout(()=>toast.style.display='none',4000);}
+
+    function showToast(msg, ok=true){
+      toast.textContent=msg;
+      toast.style.borderColor=ok?'rgba(45,212,191,.45)':'rgba(255,107,107,.45)';
+      toast.style.display='block';
+      setTimeout(()=>toast.style.display='none',4000);
+    }
     function setErr(id,show){document.getElementById(id)?.classList.toggle('show',!!show);}
     function vName(){const ok=!!form.name.value.trim();setErr('err-name',!ok);return ok;}
     function vEmail(){const ok=emailRe.test(form.email.value.trim());setErr('err-email',!ok);return ok;}
@@ -137,19 +201,49 @@
     document.getElementById('consent').addEventListener('change',vConsent);
 
     const API_BASE='https://datanetplus-api.onrender.com';
+
     form.addEventListener('submit',async e=>{
       e.preventDefault();
       if(document.getElementById('website').value){showToast('Bot blocked.',false);return;}
       const ok=[vName(),vEmail(),vMsg(),vConsent()].every(Boolean);
       if(!ok){showToast('Please fix the highlighted fields.',false);return;}
-      const payload={name:form.name.value.trim(),email:form.email.value.trim(),phone:form.phone.value.trim(),company:form.company.value.trim(),message:form.message.value.trim(),consent:document.getElementById('consent').checked,source:'web'};
+
+      const payload={
+        name:form.name.value.trim(),
+        email:form.email.value.trim(),
+        phone:form.phone.value.trim(),
+        company:form.company.value.trim(),
+        message:form.message.value.trim(),
+        consent:document.getElementById('consent').checked,
+        source:'web'
+      };
+
       try{
-        const res=await fetch(`${API_BASE}/api/lead`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+        const res=await fetch(`${API_BASE}/api/lead`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
         const json=await res.json().catch(()=>({}));
         if(!res.ok) throw new Error(json.error||`HTTP ${res.status}`);
-        form.innerHTML=`<div class="card" style="background:linear-gradient(180deg,rgba(45,212,191,.12),rgba(45,212,191,.06));border:1px solid rgba(45,212,191,.4)"><h2>Thanks — we’ve got your enquiry.</h2><p style="color:#b8c1e7">We’ll reply soon. If it’s urgent, email <a href="mailto:info@datanetplus.co.uk">info@datanetplus.co.uk</a>.</p><div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="index.html">Back to Home</a><a class="btn cta" href="mailto:info@datanetplus.co.uk">Email Us</a></div></div>`;
+
+        form.innerHTML=`
+          <div class="card" style="background:linear-gradient(180deg,rgba(45,212,191,.12),rgba(45,212,191,.06));border:1px solid rgba(45,212,191,.4)">
+            <h2>Thanks — we’ve got your enquiry.</h2>
+            <p style="color:#b8c1e7">
+              We’ll reply soon. If it’s urgent, email
+              <a href="mailto:info@datanetplus.co.uk">info@datanetplus.co.uk</a>.
+            </p>
+            <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn" href="index.html">Back to Home</a>
+              <a class="btn cta" href="mailto:info@datanetplus.co.uk">Email Us</a>
+            </div>
+          </div>`;
         showToast('Submitted successfully. Thank you!',true);
-      }catch(err){console.error(err);showToast('Could not send. Please email info@datanetplus.co.uk',false);}
+      }catch(err){
+        console.error(err);
+        showToast('Could not send. Please email info@datanetplus.co.uk',false);
+      }
     });
   </script>
 </body>
