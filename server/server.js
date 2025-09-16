@@ -1,4 +1,4 @@
-// /server/server.js  (drop-in replacement)
+// /server/server.js
 import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
@@ -6,58 +6,33 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import nodemailer from 'nodemailer';
 
 const app = express();
 
-// ---- CORS (with logging & wildcard support) ----
-const rawOrigins = (process.env.ALLOWED_ORIGINS || '')
+// CORS (why: only allow your sites to call the API)
+const allowed = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
 
-// why: support simple wildcard like *.github.io
-function originAllowed(origin) {
-  if (!origin) return true; // curl, Postman, server-to-server
-  for (const rule of rawOrigins) {
-    if (rule === origin) return true;
-    if (rule.startsWith('*.')) {
-      const domain = rule.slice(2); // after "*."
-      if (origin.endsWith(domain) && origin.split('.').length >= domain.split('.').length + 1) return true;
-    }
-  }
-  return false;
-}
-
-app.use((req, _res, next) => {
-  const o = req.headers.origin || '';
-  const ok = originAllowed(o);
-  if (process.env.NODE_ENV !== 'production') {
-    console.log(`[CORS] origin="${o}" allowed=${ok} rules=${JSON.stringify(rawOrigins)}`);
-  }
-  next();
-});
-
 app.use(cors({
   origin: (origin, cb) => {
-    if (originAllowed(origin)) return cb(null, true);
+    if (!origin) return cb(null, true); // allow curl/hoppscotch without Origin
+    if (allowed.length === 0 || allowed.includes(origin)) return cb(null, true);
     return cb(new Error('Not allowed by CORS'));
-  },
-  credentials: false
+  }
 }));
 
-app.options('*', cors()); // preflight
-
-// ---- Security / middleware ----
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(express.json({ limit: '256kb' }));
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 app.set('trust proxy', 1);
 
-// Basic abuse protection
 const limiter = rateLimit({ windowMs: 60_000, max: 20 });
 app.use('/api/', limiter);
 
-// ---- Mongo model ----
+// ===== Mongoose model =====
 const LeadSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true, maxlength: 100 },
   email: { type: String, required: true, lowercase: true, trim: true, maxlength: 200 },
@@ -70,27 +45,123 @@ const LeadSchema = new mongoose.Schema({
 
 const Lead = mongoose.model('Lead', LeadSchema);
 
-// ---- Routes ----
-app.get('/api/health', (_req, res) => res.json({ ok: true }));
+// ===== Health =====
+app.get('/api/health', (req, res) => res.json({ ok: true }));
 
+// ===== Email transport (SMTP) =====
+function buildTransport() {
+  // why: allow standard SMTP providers (SendGrid/Mailgun/Outlook/GSuite)
+  const host = process.env.SMTP_HOST;
+  const port = parseInt(process.env.SMTP_PORT || '587', 10);
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+
+  if (!host || !port || !user || !pass) {
+    console.warn('SMTP not fully configured; emails will be skipped.');
+    return null;
+  }
+
+  const secure = port === 465; // true for 465, false for others
+  return nodemailer.createTransport({
+    host, port, secure,
+    auth: { user, pass }
+  });
+}
+
+const mailer = buildTransport();
+
+// ===== Routes =====
 app.post('/api/lead', async (req, res) => {
   try {
     const { name, email, phone, company, message, consent, source } = req.body || {};
+
+    // Basic validation
     if (!name || !email || !message || consent !== true) {
       return res.status(400).json({ ok: false, error: 'Missing required fields' });
     }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       return res.status(400).json({ ok: false, error: 'Invalid email' });
     }
-    const doc = await Lead.create({ name, email, phone, company, message, consent, source });
-    return res.status(201).json({ ok: true, id: doc._id });
+
+    // Save to MongoDB (at minimum collects name + email)
+    const doc = await Lead.create({
+      name,
+      email,
+      phone: phone || '',
+      company: company || '',
+      message,
+      consent: true,
+      source: source || 'web'
+    });
+
+    // Send notification email (best-effort; do not fail the request if mail fails)
+    let mailed = false;
+    if (mailer) {
+      try {
+        const to = process.env.MAIL_TO || 'info@datanetplus.co.uk';
+        const from = process.env.MAIL_FROM || process.env.SMTP_USER;
+        const subject = `New enquiry from ${name}`;
+        const text = [
+          `New enquiry from DataNet Plus website`,
+          ``,
+          `Name: ${name}`,
+          `Email: ${email}`,
+          `Phone: ${phone || '-'}`,
+          `Company: ${company || '-'}`,
+          `Message:`,
+          message,
+          ``,
+          `Consent: ${consent ? 'Yes' : 'No'}`,
+          `Source: ${source || 'web'}`,
+          `Submitted: ${new Date().toISOString()}`
+        ].join('\n');
+
+        const html = `
+          <div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5">
+            <h2 style="margin:0 0 8px">New enquiry from DataNet Plus website</h2>
+            <p><strong>Name:</strong> ${escapeHtml(name)}<br/>
+               <strong>Email:</strong> ${escapeHtml(email)}<br/>
+               <strong>Phone:</strong> ${escapeHtml(phone || '-') }<br/>
+               <strong>Company:</strong> ${escapeHtml(company || '-') }</p>
+            <p><strong>Message:</strong><br/>${nl2br(escapeHtml(message))}</p>
+            <p><strong>Consent:</strong> ${consent ? 'Yes' : 'No'}<br/>
+               <strong>Source:</strong> ${escapeHtml(source || 'web')}<br/>
+               <strong>Submitted:</strong> ${new Date().toISOString()}</p>
+          </div>
+        `;
+
+        await mailer.sendMail({
+          from,
+          to,
+          subject,
+          text,
+          html,
+          replyTo: email // why: reply goes to the sender
+        });
+        mailed = true;
+      } catch (e) {
+        console.error('Email send failed:', e);
+      }
+    }
+
+    return res.status(201).json({ ok: true, id: doc._id, mailed });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ ok: false, error: 'Server error' });
   }
 });
 
-// ---- Startup ----
+// ===== Utils =====
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[c]));
+}
+function nl2br(s) {
+  return String(s).replace(/\n/g, '<br/>');
+}
+
+// ===== Start =====
 const PORT = process.env.PORT || 3000;
 
 async function start() {
@@ -103,5 +174,4 @@ async function start() {
     process.exit(1);
   }
 }
-
 start();
