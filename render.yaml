@@ -1,12 +1,12 @@
-# /server/render.yaml
+# /render.yaml  (put this at the **repo root**, not inside /server)
 services:
   - type: web
     name: datanetplus-api
     env: node
     plan: free
     region: frankfurt
-    rootDir: .
-    buildCommand: "npm ci"
+    rootDir: server
+    buildCommand: "npm install --omit=dev"
     startCommand: "npm start"
     autoDeploy: true
     envVars:
@@ -15,5 +15,5 @@ services:
       - key: NODE_ENV
         value: production
       - key: ALLOWED_ORIGINS
-        value: "https://your-username.github.io,https://your-username.github.io/datanetplus"
+        value: "https://timbrown841.github.io,https://timbrown841.github.io/datanetplus-site"
     healthCheckPath: /api/health
