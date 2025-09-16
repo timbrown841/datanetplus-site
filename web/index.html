@@ -12,11 +12,9 @@
       --bg:#0b1020;--bg-alt:#0e1428;--card:#111935;--ink:#e9eefb;--muted:#b8c1e7;
       --brand:#5aa0ff;--brand-2:#62e0c1;--shadow:0 10px 30px rgba(0,0,0,.25);
       --max:1120px;--radius:14px;--gap:20px;
-      --err:#ff6b6b;--ok:#2dd4bf;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
-    @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
     body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),var(--bg-alt));color:var(--ink)}
     a{color:var(--brand);text-decoration:none}
     .wrap{max-width:var(--max);margin:auto;padding:0 20px}
@@ -30,7 +28,6 @@
     nav a.active, nav a:focus{color:var(--brand-2)}
     .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--ink);cursor:pointer}
     .btn.cta{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#061226;border:none}
-    .btn.small{padding:8px 12px;font-size:.95rem}
 
     section{padding:80px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
     section:last-of-type{border-bottom:none}
@@ -56,72 +53,14 @@
     .logo{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:12px;aspect-ratio:3/1;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted)}
     @media (max-width:900px){.logos{grid-template-columns:repeat(3,1fr)}}
 
-    form#leadForm{display:grid;gap:14px;margin-top:18px}
-    form#leadForm label{display:block;font-weight:600;font-size:.95rem;margin-bottom:6px;color:var(--ink)}
-    form#leadForm input,form#leadForm textarea{
-      width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.04);color:var(--ink);font-size:1rem;line-height:1.4
-    }
-    form#leadForm input[aria-invalid="true"],
-    form#leadForm textarea[aria-invalid="true"]{border-color:rgba(255,107,107,.7);outline:0}
-    .error-text{display:none;margin-top:6px;color:var(--err);font-size:.9rem}
-    .error-text.show{display:block}
-
-    #contact .card form#leadForm .row{display:grid !important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
-    #contact .card form#leadForm .row > div{min-width:0}
-    @media (max-width:640px){#contact .card form#leadForm .row{grid-template-columns:1fr !important}}
-
-    .help{font-size:.9rem;color:var(--muted)}
-
-    /* Scoped horizontal text-flow for inputs/labels/consent only */
-    #leadForm label,
-    #leadForm input,
-    #leadForm textarea,
-    #leadForm .consent,
-    #leadForm .consent *{
-      writing-mode: horizontal-tb !important;
-      text-orientation: mixed !important;
-      white-space: normal !important;
-      word-break: normal !important;
-      overflow-wrap: break-word !important;
-      hyphens: auto;
-      max-width:100%;
-    }
-
-    #leadForm .consent{display:flex;gap:10px;align-items:flex-start;margin-top:6px;grid-column:1/-1;width:100%}
-    #leadForm .consent input[type="checkbox"]{flex:0 0 auto;margin-top:4px}
-    #leadForm .consent span{flex:1 1 auto;min-width:0;line-height:1.5;font-size:.95rem;color:var(--muted)}
-
-    .debug-on #leadForm .row{outline:1px dashed rgba(98,224,193,.6);outline-offset:4px}
-    .debug-on #leadForm .row > div{outline:1px dashed rgba(90,160,255,.6);outline-offset:2px}
-    .debug-on #leadForm .consent{outline:1px dashed rgba(255,209,102,.7);outline-offset:4px}
-
-    .toast{position:fixed;right:16px;bottom:16px;background:#101c34;color:var(--ink);border:1px solid rgba(255,255,255,.12);padding:12px 14px;border-radius:10px;box-shadow:var(--shadow);display:none;z-index:9999}
-    .toast.ok{border-color:rgba(45,212,191,.45)} .toast.err{border-color:rgba(255,107,107,.45)}
     footer{padding:28px 0;color:var(--muted)}
-    .to-top{position:fixed;bottom:24px;left:24px;display:none}.to-top.show{display:inline-flex}
-
-    .form-tools{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-bottom:8px}
-    .form-tools .info{font-size:.85rem;color:var(--muted)}
-    .form-tools.hidden{display:none}
-
-    /* Success state */
-    .success{
-      display:flex;flex-direction:column;gap:14px;align-items:flex-start;
-      background:linear-gradient(180deg,rgba(45,212,191,.12),rgba(45,212,191,.06));
-      border:1px solid rgba(45,212,191,.4);padding:18px;border-radius:12px
-    }
-    .success .tick{
-      width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
-      background:rgba(45,212,191,.25);border:1px solid rgba(45,212,191,.6);font-weight:800
-    }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap nav">
       <a href="#home" class="brand" aria-label="DataNet Plus">
-        <span class="dot" aria-hidden="true"></span><span>DataNet&nbsp;Plus</span>
+        <span class="dot"></span><span>DataNet&nbsp;Plus</span>
       </a>
       <nav aria-label="primary">
         <ul>
@@ -158,7 +97,7 @@
       </div>
       <div class="card">
         <strong>Why choose us</strong>
-        <ul class="list">
+        <ul>
           <li>Architecture & implementation (on-prem / cloud)</li>
           <li>Certified Microsoft 365/Azure & AWS specialists</li>
           <li>24×7 remote support with SLAs</li>
@@ -194,7 +133,7 @@
     <div class="wrap">
       <div class="overline">Clients</div>
       <h2>Trusted by teams small & large.</h2>
-      <div class="logos" aria-label="client logos">
+      <div class="logos">
         <div class="logo">Acme PLC</div>
         <div class="logo">Globex</div>
         <div class="logo">Initech</div>
@@ -207,66 +146,11 @@
   </section>
 
   <section id="contact">
-    <div class="wrap grid cols-2">
-      <div>
-        <div class="overline">Contact</div>
-        <h2>Tell us what you need — we’ll get back fast.</h2>
-        <p class="help">We only use your details to respond to your enquiry.</p>
-        <div class="card" style="display:inline-block"><strong>Email:</strong> info@datanetplus.co.uk</div>
-      </div>
-      <div class="card">
-        <div class="form-tools" id="formTools">
-          <span class="info">Form tools</span>
-          <button id="dbgBtn" type="button" class="btn small">Debug Grid</button>
-        </div>
-
-        <div id="formShell">
-          <form id="leadForm" novalidate>
-            <div class="row">
-              <div>
-                <label for="name">Name *</label>
-                <input id="name" name="name" autocomplete="name" required aria-describedby="err-name" />
-                <div id="err-name" class="error-text">Please enter your name.</div>
-              </div>
-              <div>
-                <label for="email">Email *</label>
-                <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="err-email" />
-                <div id="err-email" class="error-text">Enter a valid email (e.g. name@domain.com).</div>
-              </div>
-            </div>
-            <div class="row">
-              <div>
-                <label for="phone">Phone</label>
-                <input id="phone" name="phone" type="tel" autocomplete="tel" />
-              </div>
-              <div>
-                <label for="company">Company</label>
-                <input id="company" name="company" autocomplete="organization" />
-              </div>
-            </div>
-            <div>
-              <label for="message">How can we help? *</label>
-              <textarea id="message" name="message" required aria-describedby="err-message"
-                autocomplete="off" enterkeyhint="send" autocapitalize="sentences" spellcheck="true"></textarea>
-              <div id="err-message" class="error-text">Please tell us a bit about your request.</div>
-            </div>
-
-            <!-- Honeypot -->
-            <input type="text" id="website" name="website" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" tabindex="-1" autocomplete="off" aria-hidden="true">
-
-            <label class="consent" aria-describedby="err-consent">
-              <input type="checkbox" id="consent" required />
-              <span>I consent to have this website store my submitted information so DataNet Plus can respond to my enquiry.</span>
-            </label>
-            <div id="err-consent" class="error-text">Please confirm consent to proceed.</div>
-
-            <div style="display:flex;gap:10px;align-items:center">
-              <button type="submit" class="btn cta">Send</button>
-              <span id="status" class="help" role="status" aria-live="polite"></span>
-            </div>
-          </form>
-        </div>
-      </div>
+    <div class="wrap">
+      <div class="overline">Contact</div>
+      <h2>Get in touch</h2>
+      <p class="help">We only use your details to respond to your enquiry.</p>
+      <div class="card"><strong>Email:</strong> info@datanetplus.co.uk</div>
     </div>
   </section>
 
@@ -280,117 +164,8 @@
     </div>
   </footer>
 
-  <a href="#home" class="btn to-top" id="toTop" aria-label="Back to top">↑</a>
-  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
-
   <script>
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      document.documentElement.style.scrollBehavior = 'auto';
-    }
-    const links=[...document.querySelectorAll('nav a[href^="#"]')];
-    const sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    const io=new IntersectionObserver(entries=>{
-      entries.forEach(e=>{
-        const i=sections.indexOf(e.target);
-        if(e.isIntersecting){links.forEach(l=>l.classList.remove('active')); if(links[i]) links[i].classList.add('active');}
-      });
-    },{threshold:.4});
-    sections.forEach(s=>io.observe(s));
-    const toTop=document.getElementById('toTop'), hero=document.querySelector('.hero');
-    new IntersectionObserver(([e])=>{toTop.classList.toggle('show',!e.isIntersecting);},{threshold:0}).observe(hero);
     document.getElementById('y').textContent=new Date().getFullYear();
-
-    // Debug Grid toggle (auto-hide on production GitHub Pages)
-    const IS_PROD = /github\.io$/i.test(location.host);
-    const formTools = document.getElementById('formTools');
-    if (IS_PROD && formTools) formTools.classList.add('hidden');
-    const dbgBtn=document.getElementById('dbgBtn');
-    dbgBtn?.addEventListener('click', ()=>{
-      document.body.classList.toggle('debug-on');
-      dbgBtn.textContent = document.body.classList.contains('debug-on') ? 'Debug Grid (ON)' : 'Debug Grid';
-    });
-
-    // Toast
-    const toast=document.getElementById('toast');
-    function showToast(msg, ok=true){
-      toast.textContent=msg; toast.className='toast ' + (ok?'ok':'err');
-      toast.style.display='block'; setTimeout(()=>toast.style.display='none',5000);
-    }
-
-    // Inline validation helpers
-    const emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-    const form=document.getElementById('leadForm');
-    const status=document.getElementById('status');
-
-    function setError(inputEl, errEl, show, msg){
-      if (!inputEl || !errEl) return;
-      inputEl.setAttribute('aria-invalid', show ? 'true' : 'false');
-      if (msg) errEl.textContent = msg;
-      errEl.classList.toggle('show', !!show);
-    }
-    function validateName(){ const el=form.name, err=document.getElementById('err-name'); const ok=!!el.value.trim(); setError(el,err,!ok); return ok; }
-    function validateEmail(){ const el=form.email, err=document.getElementById('err-email'); const ok=emailRe.test(el.value.trim()); setError(el,err,!ok); return ok; }
-    function validateMessage(){ const el=form.message, err=document.getElementById('err-message'); const ok=el.value.trim().length>3; setError(el,err,!ok); return ok; }
-    function validateConsent(){ const el=document.getElementById('consent'), err=document.getElementById('err-consent'); const ok=el.checked===true; err.classList.toggle('show', !ok); return ok; }
-
-    form.name.addEventListener('input', validateName);
-    form.email.addEventListener('input', validateEmail);
-    form.message.addEventListener('input', validateMessage);
-    document.getElementById('consent').addEventListener('change', validateConsent);
-
-    // Submit → API with success state swap
-    const API_BASE='https://datanetplus-api.onrender.com';
-    const formShell=document.getElementById('formShell');
-
-    form?.addEventListener('submit', async(ev)=>{
-      ev.preventDefault();
-      status && (status.textContent='');
-
-      if(document.getElementById('website').value){ showToast('Bot blocked.', false); return; }
-
-      const ok = [validateName(), validateEmail(), validateMessage(), validateConsent()].every(Boolean);
-      if(!ok){ showToast('Please fix the highlighted fields.', false); return; }
-
-      const body={
-        name:form.name.value.trim(),
-        email:form.email.value.trim(),
-        phone:form.phone.value.trim(),
-        company:form.company.value.trim(),
-        message:form.message.value.trim(),
-        consent:document.getElementById('consent').checked,
-        source:'web'
-      };
-
-      try{
-        const res=await fetch(`${API_BASE}/api/lead`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(body)
-        });
-        const json=await res.json().catch(()=>({}));
-        if(!res.ok) throw new Error(json.error||`HTTP ${res.status}`);
-
-        // Success: swap the form for a success message
-        formShell.innerHTML = `
-          <div class="success" role="status" aria-live="polite">
-            <div class="tick">✓</div>
-            <div>
-              <h3 style="margin:0 0 6px">Thanks — we’ve got your enquiry.</h3>
-              <p class="help" style="margin:0">We’ll reply soon. If it’s urgent, email <a href="mailto:info@datanetplus.co.uk">info@datanetplus.co.uk</a>.</p>
-            </div>
-            <div>
-              <a href="#home" class="btn">Back to Home</a>
-              <a href="mailto:info@datanetplus.co.uk" class="btn cta">Email Us</a>
-            </div>
-          </div>
-        `;
-        document.querySelector('#contact .card')?.scrollIntoView({behavior:'smooth', block:'start'});
-        showToast('Submitted successfully. Thank you!', true);
-      }catch(err){
-        console.error(err);
-        showToast('Could not send. Please email info@datanetplus.co.uk', false);
-      }
-    });
   </script>
 </body>
 </html>
