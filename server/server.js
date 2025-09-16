@@ -9,7 +9,6 @@ import rateLimit from 'express-rate-limit';
 
 const app = express();
 
-// why: only allow your site(s) to call the API
 const allowed = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
   .map(s => s.trim())
@@ -28,11 +27,9 @@ app.use(express.json({ limit: '256kb' }));
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 app.set('trust proxy', 1);
 
-// why: basic abuse protection
 const limiter = rateLimit({ windowMs: 60_000, max: 20 });
 app.use('/api/', limiter);
 
-// Mongo model
 const LeadSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true, maxlength: 100 },
   email: { type: String, required: true, lowercase: true, trim: true, maxlength: 200 },
@@ -45,7 +42,6 @@ const LeadSchema = new mongoose.Schema({
 
 const Lead = mongoose.model('Lead', LeadSchema);
 
-// Routes
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
 app.post('/api/lead', async (req, res) => {
@@ -65,7 +61,6 @@ app.post('/api/lead', async (req, res) => {
   }
 });
 
-// Startup
 const PORT = process.env.PORT || 3000;
 
 async function start() {
