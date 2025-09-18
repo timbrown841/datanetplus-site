@@ -10,19 +10,42 @@ import sgMail from '@sendgrid/mail';
 
 const app = express();
 
-// CORS
-const allowed = (process.env.ALLOWED_ORIGINS || '')
+/* ----------------- CORS ----------------- */
+const RAW_ALLOWED = (process.env.ALLOWED_ORIGINS || '')
   .split(',')
   .map(s => s.trim())
   .filter(Boolean);
+
+// Regex patterns for safe explicit allow
+const ALLOW_PATTERNS = [
+  /^https:\/\/timbrown841\.github\.io$/i,   // your GitHub Pages site
+  /^https:\/\/hoppscotch\.io$/i             // optional: Hoppscotch tester
+];
+
+console.log('[CORS] ALLOWED_ORIGINS:', RAW_ALLOWED);
+console.log('[CORS] Pattern allow:', ALLOW_PATTERNS.map(r => r.toString()));
+
+app.use((req, _res, next) => {
+  if (req.headers.origin) {
+    console.log('[CORS] Incoming Origin:', req.headers.origin, '→', req.method, req.path);
+  }
+  next();
+});
+
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    if (allowed.length === 0 || allowed.includes(origin)) return cb(null, true);
+    if (!origin) return cb(null, true); // allow curl/Postman without Origin
+
+    if (RAW_ALLOWED.includes(origin)) return cb(null, true);
+
+    if (ALLOW_PATTERNS.some(r => r.test(origin))) return cb(null, true);
+
+    console.warn('[CORS] Blocked Origin:', origin);
     return cb(new Error('Not allowed by CORS'));
   }
 }));
 
+/* ----------------- Security & Middleware ----------------- */
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(express.json({ limit: '256kb' }));
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
@@ -31,7 +54,7 @@ app.set('trust proxy', 1);
 const limiter = rateLimit({ windowMs: 60_000, max: 20 });
 app.use('/api/', limiter);
 
-// ===== Mongo Model =====
+/* ----------------- MongoDB Model ----------------- */
 const LeadSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true, maxlength: 100 },
   email: { type: String, required: true, lowercase: true, trim: true, maxlength: 200 },
@@ -40,13 +63,19 @@ const LeadSchema = new mongoose.Schema({
   message: { type: String, required: true, trim: true, maxlength: 5000 },
   source: { type: String, trim: true, default: 'web' }
 }, { timestamps: true });
+
 const Lead = mongoose.model('Lead', LeadSchema);
 
-// ===== SendGrid =====
+/* ----------------- SendGrid ----------------- */
 const SG_KEY = process.env.SENDGRID_API_KEY || '';
-if (SG_KEY) sgMail.setApiKey(SG_KEY);
+if (SG_KEY) {
+  sgMail.setApiKey(SG_KEY);
+  console.log('[SendGrid] API key loaded');
+} else {
+  console.warn('[SendGrid] No API key found, emails disabled');
+}
 
-// ===== Routes =====
+/* ----------------- Routes ----------------- */
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
 app.post('/api/lead', async (req, res) => {
@@ -60,7 +89,6 @@ app.post('/api/lead', async (req, res) => {
       return res.status(400).json({ ok: false, error: 'Invalid email' });
     }
 
-    // Save to Mongo
     const doc = await Lead.create({
       name,
       email,
@@ -70,11 +98,10 @@ app.post('/api/lead', async (req, res) => {
       source: source || 'web'
     });
 
-    // Send email via SendGrid (best effort)
     let mailed = false;
     if (SG_KEY) {
       const to = process.env.MAIL_TO || 'info@datanetplus.co.uk';
-      const from = process.env.MAIL_FROM || to;
+      const from = process.env.MAIL_FROM || to; // must be verified in SendGrid
 
       const subject = `New enquiry from ${name}`;
       const text = [
@@ -90,6 +117,7 @@ app.post('/api/lead', async (req, res) => {
         `Source: ${source || 'web'}`,
         `Submitted: ${new Date().toISOString()}`
       ].join('\n');
+
       const html = `
         <div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5">
           <h2 style="margin:0 0 8px">New enquiry from DataNet Plus website</h2>
@@ -106,8 +134,9 @@ app.post('/api/lead', async (req, res) => {
       try {
         await sgMail.send({ to, from, subject, text, html, replyTo: email });
         mailed = true;
+        console.log('[SendGrid] Email sent →', to);
       } catch (e) {
-        console.error('SendGrid mail failed:', e?.response?.body || e.message || e);
+        console.error('[SendGrid] Email failed:', e?.response?.body || e.message || e);
       }
     }
 
@@ -118,16 +147,25 @@ app.post('/api/lead', async (req, res) => {
   }
 });
 
-// Utils
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
-function nl2br(s){return String(s).replace(/\n/g,'<br/>')}
+/* ----------------- Utils ----------------- */
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+  }[c]));
+}
+function nl2br(s) {
+  return String(s).replace(/\n/g, '<br/>');
+}
 
-// ===== Start =====
+/* ----------------- Start ----------------- */
 const PORT = process.env.PORT || 3000;
-(async function start(){
-  try{
+(async function start() {
+  try {
     if (!process.env.MONGODB_URI) throw new Error('MONGODB_URI not set');
     await mongoose.connect(process.env.MONGODB_URI);
     app.listen(PORT, () => console.log(`API listening on :${PORT}`));
-  }catch(e){ console.error(e); process.exit(1); }
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  }
 })();
