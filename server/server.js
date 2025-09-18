@@ -31,50 +31,50 @@ app.set('trust proxy', 1);
 const limiter = rateLimit({ windowMs: 60_000, max: 20 });
 app.use('/api/', limiter);
 
-// Mongo model
+// ===== Mongo Model =====
 const LeadSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true, maxlength: 100 },
   email: { type: String, required: true, lowercase: true, trim: true, maxlength: 200 },
   phone: { type: String, trim: true, maxlength: 50 },
   company: { type: String, trim: true, maxlength: 120 },
   message: { type: String, required: true, trim: true, maxlength: 5000 },
-  consent: { type: Boolean, required: true },
   source: { type: String, trim: true, default: 'web' }
 }, { timestamps: true });
 const Lead = mongoose.model('Lead', LeadSchema);
 
-// SendGrid setup
+// ===== SendGrid =====
 const SG_KEY = process.env.SENDGRID_API_KEY || '';
 if (SG_KEY) sgMail.setApiKey(SG_KEY);
 
-// Health
+// ===== Routes =====
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 
-// Submit lead → save + email
 app.post('/api/lead', async (req, res) => {
   try {
-    const { name, email, phone, company, message, consent, source } = req.body || {};
-    if (!name || !email || !message || consent !== true) {
+    const { name, email, phone, company, message, source } = req.body || {};
+
+    if (!name || !email || !message) {
       return res.status(400).json({ ok: false, error: 'Missing required fields' });
     }
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       return res.status(400).json({ ok: false, error: 'Invalid email' });
     }
 
+    // Save to Mongo
     const doc = await Lead.create({
       name,
       email,
       phone: phone || '',
       company: company || '',
       message,
-      consent: true,
       source: source || 'web'
     });
 
+    // Send email via SendGrid (best effort)
     let mailed = false;
     if (SG_KEY) {
       const to = process.env.MAIL_TO || 'info@datanetplus.co.uk';
-      const from = process.env.MAIL_FROM || to; // must be verified in SendGrid
+      const from = process.env.MAIL_FROM || to;
 
       const subject = `New enquiry from ${name}`;
       const text = [
@@ -87,7 +87,6 @@ app.post('/api/lead', async (req, res) => {
         `Message:`,
         message,
         ``,
-        `Consent: ${consent ? 'Yes' : 'No'}`,
         `Source: ${source || 'web'}`,
         `Submitted: ${new Date().toISOString()}`
       ].join('\n');
@@ -99,8 +98,7 @@ app.post('/api/lead', async (req, res) => {
              <strong>Phone:</strong> ${escapeHtml(phone || '-') }<br/>
              <strong>Company:</strong> ${escapeHtml(company || '-') }</p>
           <p><strong>Message:</strong><br/>${nl2br(escapeHtml(message))}</p>
-          <p><strong>Consent:</strong> ${consent ? 'Yes' : 'No'}<br/>
-             <strong>Source:</strong> ${escapeHtml(source || 'web')}<br/>
+          <p><strong>Source:</strong> ${escapeHtml(source || 'web')}<br/>
              <strong>Submitted:</strong> ${new Date().toISOString()}</p>
         </div>
       `;
@@ -110,7 +108,6 @@ app.post('/api/lead', async (req, res) => {
         mailed = true;
       } catch (e) {
         console.error('SendGrid mail failed:', e?.response?.body || e.message || e);
-        // do not fail the request on email error
       }
     }
 
@@ -125,6 +122,7 @@ app.post('/api/lead', async (req, res) => {
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function nl2br(s){return String(s).replace(/\n/g,'<br/>')}
 
+// ===== Start =====
 const PORT = process.env.PORT || 3000;
 (async function start(){
   try{
