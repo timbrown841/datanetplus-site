@@ -1,4 +1,3 @@
-<!-- /contact-form.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,13 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact — DataNet Plus</title>
   <meta name="description" content="Contact DataNet Plus — send us your enquiry." />
+
   <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="16x16" href="assets/logo.png?v=2">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png?v=2">
   <link rel="apple-touch-icon" href="assets/logo.png?v=2">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
         rel="preload" as="style" onload="this.rel='stylesheet'">
+
   <style>
     :root{--bg:#0b1020;--bg-alt:#0e1428;--ink:#e9eefb;--muted:#b8c1e7;--brand:#5aa0ff;--brand2:#62e0c1;--max:900px;--radius:14px;--err:#ff7b7b}
     *{box-sizing:border-box}
@@ -39,9 +41,6 @@
     textarea{min-height:140px;resize:vertical}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media (max-width:640px){.row{grid-template-columns:1fr}}
-    .consent{display:flex;gap:10px;align-items:flex-start}
-    .consent input[type="checkbox"]{flex:0 0 auto;margin-top:4px}
-    .consent span{flex:1 1 auto;min-width:0;line-height:1.5;color:var(--muted)}
     .error{display:none;color:var(--err);font-size:.9rem;margin-top:6px}
     .error.show{display:block}
     .toast{position:fixed;right:16px;bottom:16px;background:#101c34;color:var(--ink);border:1px solid rgba(255,255,255,.12);padding:12px 14px;border-radius:10px;display:none}
@@ -109,12 +108,6 @@
                  style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"
                  tabindex="-1" autocomplete="off" aria-hidden="true">
 
-          <label class="consent" aria-describedby="err-consent">
-            <input type="checkbox" id="consent" required>
-            <span>I consent to have this website store my submitted information so DataNet Plus can respond to my enquiry.</span>
-          </label>
-          <div id="err-consent" class="error">Please confirm consent to proceed.</div>
-
           <div style="display:flex;gap:10px;align-items:center">
             <button type="submit" class="btn cta">Send</button>
             <a class="btn" href="index.html">Cancel</a>
@@ -141,7 +134,6 @@
   <script>
     document.getElementById('y').textContent=new Date().getFullYear();
 
-    // === Client-side validation ===
     const emailRe=/^[^@\s]+@[^@\s]+\.[^@\s]+$/;
     const form=document.getElementById('leadForm');
     const toast=document.getElementById('toast');
@@ -156,20 +148,17 @@
     function vName(){const ok=!!form.name.value.trim();setErr('err-name',!ok);return ok;}
     function vEmail(){const ok=emailRe.test(form.email.value.trim());setErr('err-email',!ok);return ok;}
     function vMsg(){const ok=form.message.value.trim().length>3;setErr('err-message',!ok);return ok;}
-    function vConsent(){const ok=document.getElementById('consent').checked;setErr('err-consent',!ok);return ok;}
 
     form.name.addEventListener('input',vName);
     form.email.addEventListener('input',vEmail);
     form.message.addEventListener('input',vMsg);
-    document.getElementById('consent').addEventListener('change',vConsent);
 
-    // === API target: Render (must allow your origin in CORS) ===
     const API_BASE='https://datanetplus-api.onrender.com';
 
     form.addEventListener('submit',async e=>{
       e.preventDefault();
       if(document.getElementById('website').value){showToast('Bot blocked.',false);return;}
-      const ok=[vName(),vEmail(),vMsg(),vConsent()].every(Boolean);
+      const ok=[vName(),vEmail(),vMsg()].every(Boolean);
       if(!ok){showToast('Please fix the highlighted fields.',false);return;}
 
       const payload={
@@ -178,7 +167,6 @@
         phone:form.phone.value.trim(),
         company:form.company.value.trim(),
         message:form.message.value.trim(),
-        consent:document.getElementById('consent').checked,
         source:'web'
       };
 
@@ -186,14 +174,11 @@
         const res=await fetch(`${API_BASE}/api/lead`,{
           method:'POST',
           headers:{'Content-Type':'application/json'},
-          body:JSON.stringify(payload),
-          mode:'cors', // explicit
-          keepalive:false
+          body:JSON.stringify(payload)
         });
         const json=await res.json().catch(()=>({}));
         if(!res.ok) throw new Error(json.error||`HTTP ${res.status}`);
 
-        // Success UI
         form.innerHTML=`
           <div class="card" style="background:linear-gradient(180deg,rgba(45,212,191,.12),rgba(45,212,191,.06));border:1px solid rgba(45,212,191,.4)">
             <h2>Thanks — we’ve got your enquiry.</h2>
