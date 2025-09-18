@@ -19,7 +19,7 @@ const RAW_ALLOWED = (process.env.ALLOWED_ORIGINS || '')
 // Regex patterns for safe explicit allow
 const ALLOW_PATTERNS = [
   /^https:\/\/timbrown841\.github\.io$/i,   // your GitHub Pages site
-  /^https:\/\/hoppscotch\.io$/i             // optional: Hoppscotch tester
+  
 ];
 
 console.log('[CORS] ALLOWED_ORIGINS:', RAW_ALLOWED);
