@@ -1,38 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Terms & Conditions — DataNet Plus Ltd</title>
-  <link rel="stylesheet" href="assets/site.css">
+
+  <!-- Shared site styles -->
+  <link rel="stylesheet" href="site.css" />
+
+  <!-- Fallback (only if site.css fails to load) -->
   <style>
-    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#0b1020;color:#e9eefb;line-height:1.6}
+    .brand img{height:60px;width:auto;display:block;border-radius:6px}
+    header{background:#0e1428;padding:16px;text-align:center;min-height:88px;display:flex;align-items:center;justify-content:center}
+    body{margin:0;background:#0b1020;color:#e9eefb;font-family:Inter,system-ui,Arial,sans-serif;line-height:1.6}
     .wrap{max-width:900px;margin:auto;padding:40px 20px}
-    a{color:#5aa0ff}
-    h1{margin-top:0}
-    header,footer{background:#0e1428;padding:16px;text-align:center}
-    footer{font-size:.9rem;color:#b8c1e7}
-    h2{margin-top:24px}
-    ul{margin:0 0 16px 20px}
-    
-     .brand img{
-      height:60px;       /* <-- desired logo size */
-      width:auto;
-      border-radius:6px
-    }
-    
+    a{color:#5aa0ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    footer{background:#0e1428;padding:16px;text-align:center;font-size:.9rem;color:#b8c1e7}
+    footer a{color:inherit}
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html">
+    <a href="index.html" class="brand" aria-label="Back to Home">
       <img src="assets/logo.png" alt="DataNet Plus logo">
     </a>
   </header>
 
   <main class="wrap">
     <h1>Terms & Conditions</h1>
-    <p><strong>Effective Date:</strong> [insert date]<br>
+    <p class="small"><strong>Effective Date:</strong> [insert date]<br>
     <strong>Company:</strong> DataNet Plus Ltd (Company Reg No. 10935495), registered in England and Wales.<br>
     <strong>Email:</strong> <a href="mailto:info@datanetplus.co.uk">info@datanetplus.co.uk</a></p>
 
@@ -82,11 +79,8 @@
   </main>
 
   <footer>
-    © <span id="y"></span> DataNet Plus Ltd
+    © <span id="y"></span> DataNet Plus Ltd • <a href="privacy.html">Privacy Policy</a> • <a href="terms.html">Terms & Conditions</a>
   </footer>
-
-  <script>
-    document.getElementById("y").textContent=new Date().getFullYear();
-  </script>
+  <script>document.getElementById("y").textContent=new Date().getFullYear();</script>
 </body>
 </html>
