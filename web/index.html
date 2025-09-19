@@ -94,6 +94,28 @@
     @media (max-width:900px){.logos{grid-template-columns:repeat(3,1fr)}}
 
     footer{padding:28px 0;color:var(--muted)}
+
+.client-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.client-logos img {
+  height: 60px;      /* adjust as needed */
+  max-width: 160px;  /* keeps logos proportional */
+  object-fit: contain;
+  filter: grayscale(100%) brightness(0.9); /* subtle muted look */
+  transition: filter 0.3s;
+}
+
+.client-logos img:hover {
+  filter: none; /* restore color on hover */
+}
+      
   </style>
 </head>
 <body>
