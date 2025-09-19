@@ -1,3 +1,4 @@
+<!-- /terms.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,17 +6,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Terms & Conditions — DataNet Plus Ltd</title>
 
-  <!-- Shared site styles -->
-  <link rel="stylesheet" href="site.css" />
+  <!-- Shared CSS (cache-busted) -->
+  <link rel="stylesheet" href="site.css?v=3" />
 
-  <!-- Fallback (only if site.css fails to load) -->
+  <!-- Minimal fallback styles if site.css doesn't load -->
   <style>
-    .brand img{height:60px;width:auto;display:block;border-radius:6px}
-    header{background:#0e1428;padding:16px;text-align:center;min-height:88px;display:flex;align-items:center;justify-content:center}
     body{margin:0;background:#0b1020;color:#e9eefb;font-family:Inter,system-ui,Arial,sans-serif;line-height:1.6}
+    a{color:#5aa0ff;text-decoration:none} a:hover{text-decoration:underline}
+    header{background:#0e1428;padding:16px;text-align:center;min-height:88px;display:flex;align-items:center;justify-content:center}
     .wrap{max-width:900px;margin:auto;padding:40px 20px}
-    a{color:#5aa0ff;text-decoration:none}
-    a:hover{text-decoration:underline}
     footer{background:#0e1428;padding:16px;text-align:center;font-size:.9rem;color:#b8c1e7}
     footer a{color:inherit}
   </style>
@@ -23,7 +22,9 @@
 <body>
   <header>
     <a href="index.html" class="brand" aria-label="Back to Home">
-      <img src="assets/logo.png" alt="DataNet Plus logo">
+      <!-- Force the logo size no matter what -->
+      <img src="assets/logo.png" alt="DataNet Plus logo"
+           style="height:60px;width:auto;display:block;border-radius:6px" />
     </a>
   </header>
 
@@ -81,6 +82,8 @@
   <footer>
     © <span id="y"></span> DataNet Plus Ltd • <a href="privacy.html">Privacy Policy</a> • <a href="terms.html">Terms & Conditions</a>
   </footer>
-  <script>document.getElementById("y").textContent=new Date().getFullYear();</script>
+  <script>
+    document.getElementById("y").textContent=new Date().getFullYear();
+  </script>
 </body>
 </html>
