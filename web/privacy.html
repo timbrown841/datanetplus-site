@@ -5,37 +5,39 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Privacy Policy — DataNet Plus Ltd</title>
   <style>
-    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#0b1020;color:#e9eefb;line-height:1.6}
+    :root{--bg:#0b1020;--ink:#e9eefb;--muted:#b8c1e7;--bar:#0e1428;--link:#5aa0ff}
+    /* Base */
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+    a{color:var(--link)}
     .wrap{max-width:900px;margin:auto;padding:40px 20px}
-    a{color:#5aa0ff}
     h1{margin-top:0}
-    header,footer{background:#0e1428;padding:16px;text-align:center}
-    footer{font-size:.9rem;color:#b8c1e7}
     h2{margin-top:24px}
     ul{margin:0 0 16px 20px}
 
-.brand img {
-  height: 60px;   /* bigger logo */
-  width: auto;
-  display: block;
-  border-radius: 6px;
-}
+    /* Prevent images from filling viewport by default */
+    img{max-width:100%;height:auto;display:block}
 
-header {
-  background:#0e1428;
-  padding:16px;
-  text-align:center;
-  min-height:88px; /* make header taller */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+    /* Header with bigger logo (fixed height) */
+    header{
+      background:var(--bar);
+      padding:16px;
+      text-align:center;
+      min-height:88px;            /* comfortable bar height */
+      display:flex;align-items:center;justify-content:center
+    }
+    .brand img{
+      height:60px !important;     /* lock size */
+      width:auto !important;      /* keep aspect ratio */
+      border-radius:6px;
+    }
 
+    footer{background:var(--bar);padding:16px;text-align:center;font-size:.9rem;color:var(--muted)}
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html">
+    <a href="index.html" class="brand" aria-label="Back to Home">
       <img src="assets/logo.png" alt="DataNet Plus logo">
     </a>
   </header>
@@ -105,7 +107,7 @@ header {
   </main>
 
   <footer>
-    © <span id="y"></span> DataNet Plus Ltd
+    © <span id="y"></span> DataNet Plus Ltd • <a href="privacy.html" style="color:inherit">Privacy</a> • <a href="terms.html" style="color:inherit">Terms</a>
   </footer>
 
   <script>
