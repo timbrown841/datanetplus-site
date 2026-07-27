@@ -44,3 +44,38 @@
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 28px;
+  border-radius: 18px;
+  transition: 0.3s;
+  backdrop-filter: blur(12px);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.18);
+}
+
+section {
+  padding: 120px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+nav a:hover {
+  color: var(--brand2);
+  text-shadow: 0 0 8px rgba(98,224,193,0.4);
+}
+
+.nav {
+  animation: fadeIn 0.6s ease;
+}
+
+.client-logos img:hover {
+  filter: none;
+  transform: translateY(-4px);
+  transition: 0.3s;
+}
